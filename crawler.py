@@ -33,13 +33,33 @@ json_file_dict=[]
 faculty_id=1
 core_url="https://web.stevens.edu/facultyprofile/?id="
 full_url=core_url+str(faculty_id)
-while(faculty_id<20):
+while(faculty_id<900):
     driver.get(full_url)
     try:
         prof_title = driver.find_elements_by_xpath('//*[@id="page"]/section/div/div/h1')[0]
         prof_desig = driver.find_elements_by_xpath('//*[@id="page"]/section/div/div/div[1]/div/table/tbody/tr/td[2]/div/div/table/tbody/tr[1]/td')[0]
-        # print(str(faculty_id)+':'+prof_title.text)
-        # print(prof_desig.text)
+        
+        print(str(faculty_id)+':'+prof_title.text)
+        print(prof_desig.text)
+
+        for i in range(1,9000):
+            # url=f'\'//*[@id="page"]/section/div/div/div[{i}]\''
+
+            result=driver.find_elements_by_xpath(str(f'//*[@id="page"]/section/div/div/div[{i}]'))[0]
+            if hasattr(result,'text'):
+                print(result.text)
+            else:
+                print("NO")
+
+        # //*[@id="page"]/section/div/div/div[2]
+        # //*[@id="page"]/section/div/div/div[3]
+        # //*[@id="page"]/section/div/div/div[4]
+        # //*[@id="page"]/section/div/div/div[6]
+
+        # //*[@id="page"]/section/div/div/div[10]
+        # //*[@id="page"]/section/div/div/div[11]
+
+
         # json_file_dict_element['name']=prof_title.text
         json_file_dict_element.update(name = prof_title.text)
         # json_file_dict_element['fc_id']=faculty_id
