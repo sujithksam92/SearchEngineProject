@@ -33,7 +33,7 @@ json_file_dict=[]
 faculty_id=1
 core_url="https://web.stevens.edu/facultyprofile/?id="
 full_url=core_url+str(faculty_id)
-while(faculty_id<900):
+while(faculty_id<5):
     driver.get(full_url)
     try:
         prof_title = driver.find_elements_by_xpath('//*[@id="page"]/section/div/div/h1')[0]
@@ -42,22 +42,30 @@ while(faculty_id<900):
         print(str(faculty_id)+':'+prof_title.text)
         print(prof_desig.text)
 
-        for i in range(1,9000):
-            # url=f'\'//*[@id="page"]/section/div/div/div[{i}]\''
+        prof_text_li = driver.find_elements_by_tag_name('li')
+        for item in prof_text_li:
+            print(item.text)
+        prof_text_p = driver.find_elements_by_tag_name('li')
+        for item in prof_text_p:
+            print(item.text)
+        faculty_id+=1
+        full_url=core_url+str(faculty_id)
+    #     for i in range(1,9000):
+    #         # url=f'\'//*[@id="page"]/section/div/div/div[{i}]\''
 
-            result=driver.find_elements_by_xpath(str(f'//*[@id="page"]/section/div/div/div[{i}]'))[0]
-            if hasattr(result,'text'):
-                print(result.text)
-            else:
-                print("NO")
+    #         result=driver.find_elements_by_xpath(str(f'//*[@id="page"]/section/div/div/div[{i}]'))[0]
+    #         if hasattr(result,'text'):
+    #             print(result.text)
+    #         else:
+    #             print("NO")
 
-        # //*[@id="page"]/section/div/div/div[2]
-        # //*[@id="page"]/section/div/div/div[3]
-        # //*[@id="page"]/section/div/div/div[4]
-        # //*[@id="page"]/section/div/div/div[6]
+    #     # //*[@id="page"]/section/div/div/div[2]
+    #     # //*[@id="page"]/section/div/div/div[3]
+    #     # //*[@id="page"]/section/div/div/div[4]
+    #     # //*[@id="page"]/section/div/div/div[6]
 
-        # //*[@id="page"]/section/div/div/div[10]
-        # //*[@id="page"]/section/div/div/div[11]
+    #     # //*[@id="page"]/section/div/div/div[10]
+    #     # //*[@id="page"]/section/div/div/div[11]
 
 
         # json_file_dict_element['name']=prof_title.text
@@ -67,11 +75,16 @@ while(faculty_id<900):
         # json_file_dict.append(json_file_dict_element)
         json_file_dict_element.update(fc_desig = prof_desig.text)
         # print(json_file_dict_element)
+        element_lis={}
+        for i,item in enumerate(prof_text_li,start=0):
+            element_lis.update(content = item.text)
+        json_file_dict_element.update(fc_li = element_lis)
+        # for i,item in enumerate(prof_text_p,start=0):
+        #     json_file_dict_element.update(fc_content_p[i] = item.text)        
         json_file_dict.append(dict(json_file_dict_element))
     except IndexError:
         pass
-    faculty_id+=1
-    full_url=core_url+str(faculty_id)
+
 
 print(json_file_dict)
 
