@@ -1,7 +1,9 @@
 import queue
 import re
 import requests
+import pprint
 import os  
+# import json5
 import urllib.robotparser
 from urllib.parse import urlparse
 from urllib.parse import urljoin
@@ -45,7 +47,7 @@ while(faculty_id<5):
         prof_text_li = driver.find_elements_by_tag_name('li')
         for item in prof_text_li:
             print(item.text)
-        prof_text_p = driver.find_elements_by_tag_name('li')
+        prof_text_p = driver.find_elements_by_tag_name('p')
         for item in prof_text_p:
             print(item.text)
         faculty_id+=1
@@ -76,9 +78,16 @@ while(faculty_id<5):
         json_file_dict_element.update(fc_desig = prof_desig.text)
         # print(json_file_dict_element)
         element_lis={}
+        content_list=[]
         for i,item in enumerate(prof_text_li,start=0):
-            element_lis.update(content = item.text)
-        json_file_dict_element.update(fc_li = element_lis)
+            content_list.insert(i,item.text)
+        json_file_dict_element.update(fc_content = content_list)
+        for i,item in enumerate(prof_text_p,start=0):
+            content_list.insert(i,item.text)
+        json_file_dict_element.update(fc_content = content_list)
+        # print(content_list)
+        # json_file_dict_element.update(fc_li = element_lis)
+        
         # for i,item in enumerate(prof_text_p,start=0):
         #     json_file_dict_element.update(fc_content_p[i] = item.text)        
         json_file_dict.append(dict(json_file_dict_element))
@@ -86,7 +95,9 @@ while(faculty_id<5):
         pass
 
 
-print(json_file_dict)
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(json_file_dict)
+# print(json_file_dict)
 
 
 
