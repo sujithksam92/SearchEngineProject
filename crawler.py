@@ -3,7 +3,7 @@ import re
 import requests
 import pprint
 import os  
-# import json5
+import json
 import urllib.robotparser
 from urllib.parse import urlparse
 from urllib.parse import urljoin
@@ -11,7 +11,31 @@ from bs4 import BeautifulSoup
 from selenium import webdriver  
 from selenium.webdriver.common.keys import Keys  
 from selenium.webdriver.chrome.options import Options  
+import numpy as np
+import pandas as pd
+import gensim
+import gensim.corpora as corpora
+from gensim.utils import simple_preprocess
+from gensim.models import CoherenceModel
+import spacy
+import logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.ERROR)
+import pyLDAvis
+import pyLDAvis.gensim
+from sys import platform
+import copy
+import matplotlib as plt
+if platform == "darwin":
+    plt.use('TkAgg')    
+# from IPython import get_ipython
+# get_ipython().run_line_magic('matplotlib','inline')
 
+import warnings
+warnings.filterwarnings("ignore",category=DeprecationWarning)
+import nltk; nltk.download('stopwords')
+from nltk.corpus import stopwords
+stop_words = stopwords.words('english')
+stop_words.extend(['from','subject','re','edu','use'])
 
 
 # def is_absolute(url):
@@ -35,21 +59,24 @@ json_file_dict=[]
 faculty_id=1
 core_url="https://web.stevens.edu/facultyprofile/?id="
 full_url=core_url+str(faculty_id)
-while(faculty_id<5):
+while(faculty_id<10):
     driver.get(full_url)
     try:
         prof_title = driver.find_elements_by_xpath('//*[@id="page"]/section/div/div/h1')[0]
         prof_desig = driver.find_elements_by_xpath('//*[@id="page"]/section/div/div/div[1]/div/table/tbody/tr/td[2]/div/div/table/tbody/tr[1]/td')[0]
         
-        print(str(faculty_id)+':'+prof_title.text)
-        print(prof_desig.text)
+        # Print Prof Details to Check
+        # print(str(faculty_id)+':'+prof_title.text)
+        # print(prof_desig.text)
 
         prof_text_li = driver.find_elements_by_tag_name('li')
-        for item in prof_text_li:
-            print(item.text)
+        # Print LI to check
+        # for item in prof_text_li:
+        #     print(item.text)
         prof_text_p = driver.find_elements_by_tag_name('p')
-        for item in prof_text_p:
-            print(item.text)
+        # Print LI to check
+        # for item in prof_text_p:
+        #     print(item.text)
         faculty_id+=1
         full_url=core_url+str(faculty_id)
     #     for i in range(1,9000):
@@ -94,9 +121,28 @@ while(faculty_id<5):
     except IndexError:
         pass
 
-
+# Pretty Print Start
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(json_file_dict)
+# Pretty Print End
+
+#Write JSON File Start
+with open('testdata.json','w') as outfile:
+    json.dump(json_file_dict,outfile)
+#Write JSON File End
+
+#Read JSON File
+# file = 'testdata.json'
+# with open(file) as train_file:
+#     dict_train=json.load(train_file)
+#
+
+#start LDA
+df = pd.DataFrame.from_dict(json_file_dict)
+print(df.name.unique()) 
+df.head()
+#
+
 # print(json_file_dict)
 
 
