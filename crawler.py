@@ -30,12 +30,7 @@ if platform == "darwin":
 # from IPython import get_ipython
 # get_ipython().run_line_magic('matplotlib','inline')
 
-import warnings
-warnings.filterwarnings("ignore",category=DeprecationWarning)
-import nltk; nltk.download('stopwords')
-from nltk.corpus import stopwords
-stop_words = stopwords.words('english')
-stop_words.extend(['from','subject','re','edu','use'])
+
 
 
 # def is_absolute(url):
@@ -115,17 +110,10 @@ with open('testdata.json','w') as outfile:
     json.dump(json_file_dict,outfile)
 #Write JSON File End
 
-#Read JSON File
-# file = 'testdata.json'
-# with open(file) as train_file:
-#     dict_train=json.load(train_file)
-#
 
-#start LDA
-df = pd.DataFrame.from_dict(json_file_dict)
-print(df.name.unique()) 
-df.head()
-#
+
+
+
 
 # print(json_file_dict)
 
