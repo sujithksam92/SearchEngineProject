@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.angularjs.org/1.2.13/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+<!-- Initialize a new AngularJS app and associate it
+     with a module named "instantSearch"-->
+<div ng-app="searchApp" ng-controller="searchController" style="width:500px">
+    <div>
+        <img src="https://raw.githubusercontent.com/sujithksam92/SearchEngineProject/master/Logo/Logo/Logo.001.png" alt="Search Engine Name" height="50%" width="100%">
+    </div>
+    <div style="margin:20px">
+        <p>
+            You can make use of Quaggle, the instant search engine to search
+            for research professors.
+        </p>
+    </div>
+    <div class="bar">
+        <!-- Create a binding between the searchString model
+        and the text field -->
+        <input type="text" ng-model="searchString"
+               placeholder="Enter your area of interest" />
+    </div>
+    <ul>
+        <!-- Render a li element for every entry in the items array. Notice
+             the custom search filter "searchFor"
+         -->
+        <li  ng-repeat="dD in dataDump | searchFor:searchString track by $index" ng-if="dD !== undefined">
+            <p> Name: {{dD.name}} </p>
+            <p> Designation: {{dD.fc_desig}}</p>
+            <p>Content: </p>
+            <p ng-repeat="conItem in dD.fc_content  track by $index"> {{conItem}} </p>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
